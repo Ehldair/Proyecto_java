@@ -17,6 +17,19 @@ public class Coche {
 		color=co;
 	}
 	public String toString() {
+		String c=getColor();
+		return "Coche [conjuntoRuedas=[Rueda "+Arrays.toString(conjuntoRuedas)+",chasis=Chasis "+chasis.toString()+", color= "+c;
+	}
+	public void setColor(int co) {
+		color=co;
+	}
+	public void setRueda(Rueda ru,int x) {
+		conjuntoRuedas[x]=ru;
+	}
+	public void setChasis(Chasis ch) {
+		chasis=ch;
+	}
+	public String getColor() {
 		String c;
 		if(color==0) {
 			c ="ROJO";
@@ -28,8 +41,6 @@ public class Coche {
 		} else {
 			c ="BLANCO";
 		}
-		return "Coche [conjuntoRuedas=[Rueda "+Arrays.toString(conjuntoRuedas)+",chasis=Chasis "+chasis.toString()+", color= "+c;
-
-
+		return c;
 	}
 }
