@@ -10,6 +10,7 @@ public class Fabrica {
 	String defaultMaterial="FIBRA";
 	int capacidadFabrica;
 	Coche conjuntoCochesFabricados[];
+	int numeroFabricados=0;
 	public Fabrica(String nombre, double r, int t, double p, String m, int c) {
 		nombreFabrica=nombre;
 		defaultRadio=r;
@@ -17,6 +18,7 @@ public class Fabrica {
 		defaultPeso=p;
 		defaultMaterial=m;
 		capacidadFabrica=c;
+		conjuntoCochesFabricados=new Coche[capacidadFabrica];
 	}
 	public void setDefaultRadio(double r) {
 		defaultRadio=r;
@@ -43,12 +45,11 @@ public class Fabrica {
 		return defaultMaterial;
 	}
 	public boolean iniciarFabricacion(int numeroCoches) {
-		conjuntoCochesFabricados=new Coche[numeroCoches];
 		if(numeroCoches>capacidadFabrica) {
 			return false;
 		}
 		else {	
-			for (int x=0;x<numeroCoches;x++) {
+			for (int x=numeroFabricados;x<numeroCoches+numeroFabricados;x++) {
 				try {
 					conjuntoCochesFabricados[x]=fabricarCoche();
 				}
@@ -57,6 +58,7 @@ public class Fabrica {
 					conjuntoCochesFabricados[x]=fabricarCoche();
 				}
 			}
+			numeroFabricados=numeroFabricados+numeroCoches;
 			return true;
 		}
 	}
@@ -71,9 +73,10 @@ public class Fabrica {
 		try {
 			System.out.println("#########################");
 			System.out.println("Fabrica: "+nombreFabrica);
-			System.out.println("Numero actual de fabricados: "+conjuntoCochesFabricados.length);
+			System.out.println("Numero actual de fabricados: "+numeroFabricados+"/"+conjuntoCochesFabricados.length);
 			System.out.println("*************************");
-			for(int x=0;x<conjuntoCochesFabricados.length;x++) {
+			
+			for(int x=0;x<numeroFabricados;x++) {
 				int i=x+1;
 				System.out.println("Coche"+i+ " color: "+conjuntoCochesFabricados[x].getColor());
 				System.out.println (conjuntoCochesFabricados[x]);
@@ -91,19 +94,16 @@ public class Fabrica {
 			return false;
 		}
 		else {
-			sacarCoche(numeroCoches);
+			for(int x=0;x<numeroCoches;x++) {
+				sacarCoche(0);
+			}
+			numeroFabricados=numeroFabricados-numeroCoches;
 			return true;
 		}
 	}
-	private void sacarCoche(int numeroCoches) {
-		Coche conjuntoCochesFabricados2[];
-		int resto=conjuntoCochesFabricados.length-numeroCoches;
-		conjuntoCochesFabricados2=new Coche[resto];
-		System.out.println("tamaño2:"+conjuntoCochesFabricados2.length);
-		System.arraycopy(conjuntoCochesFabricados,resto+1,conjuntoCochesFabricados2,0,resto);
-		conjuntoCochesFabricados=conjuntoCochesFabricados2;
-		
+	private void sacarCoche(int numero) {
+		ArrayList<Coche> lista = new ArrayList<>(Arrays.asList(conjuntoCochesFabricados));
+		lista.remove(numero);
+		conjuntoCochesFabricados = lista.toArray(new Coche[lista.size()]);
 	}
-	
-	
 }
