@@ -8,7 +8,8 @@ public class Teacher extends Person {
 		super(name,address);
 	}
 	public boolean addCourse(String course) {
-		
+		boolean b=true;
+		return b;
 	}
 	public boolean removeCourse(String course) {
 		
