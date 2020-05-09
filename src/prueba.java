@@ -16,22 +16,40 @@ public class prueba {
 		coche1.setChasis(chasis2);
 		
 		Fabrica fabrica=new Fabrica("CHAPAHENAR",Rueda.HUMEDO,0,3000,Chasis.MATERIAL4, 15);
+		if(fabrica.iniciarFabricacion(8)==false) {
+			System.out.println("Error de capacidad");
+		}
+		else {
+			System.out.println(fabrica);
+		}
 		if(fabrica.iniciarFabricacion(2)==false) {
 			System.out.println("Error de capacidad");
 		}
 		else {
 			System.out.println(fabrica);
 		}
-		if(fabrica.iniciarFabricacion(1)==false) {
+		if(fabrica.iniciarFabricacion(5)==false) {
 			System.out.println("Error de capacidad");
 		}
 		else {
 			System.out.println(fabrica);
 		}
-		
-		fabrica.retirarCoche(2);
-		System.out.println(fabrica);
+		if(fabrica.retirarCoche(3)==false) {
+			System.out.println("No hay coches suficientes");
+		}
+		else {
+			System.out.println(fabrica);
+		}
+		if(fabrica.retirarCoche(3,2)==false) {
+			System.out.println("No hay coches suficientes");
+		}
+		else {
+			System.out.println(fabrica);
+		}
 
+	
+	
+		
 
 	}
 

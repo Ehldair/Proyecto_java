@@ -43,4 +43,8 @@ public class Coche {
 		}
 		return c;
 	}
+	
+	public int getColorInt() {
+		return color;
+	}
 }

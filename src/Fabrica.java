@@ -10,7 +10,6 @@ public class Fabrica {
 	String defaultMaterial="FIBRA";
 	int capacidadFabrica;
 	Coche conjuntoCochesFabricados[];
-	int numeroFabricados=0;
 	public Fabrica(String nombre, double r, int t, double p, String m, int c) {
 		nombreFabrica=nombre;
 		defaultRadio=r;
@@ -18,7 +17,7 @@ public class Fabrica {
 		defaultPeso=p;
 		defaultMaterial=m;
 		capacidadFabrica=c;
-		conjuntoCochesFabricados=new Coche[capacidadFabrica];
+		conjuntoCochesFabricados=new Coche[0];
 	}
 	public void setDefaultRadio(double r) {
 		defaultRadio=r;
@@ -45,11 +44,22 @@ public class Fabrica {
 		return defaultMaterial;
 	}
 	public boolean iniciarFabricacion(int numeroCoches) {
-		if(numeroCoches>capacidadFabrica) {
+		Coche[] conjuntoCochesFabricados2=new Coche[0];
+		if(conjuntoCochesFabricados.length+numeroCoches>capacidadFabrica) {
 			return false;
 		}
 		else {	
-			for (int x=numeroFabricados;x<numeroCoches+numeroFabricados;x++) {
+			if(conjuntoCochesFabricados.length==0) {
+				conjuntoCochesFabricados=new Coche[numeroCoches];
+			}
+			else {
+			conjuntoCochesFabricados2=conjuntoCochesFabricados; 
+			conjuntoCochesFabricados=new Coche[conjuntoCochesFabricados2.length+numeroCoches];
+				for(int x=0;x<conjuntoCochesFabricados2.length;x++) {
+				conjuntoCochesFabricados[x]=conjuntoCochesFabricados2[x];
+				}
+			}
+			for (int x=conjuntoCochesFabricados2.length;x<conjuntoCochesFabricados.length;x++) {
 				try {
 					conjuntoCochesFabricados[x]=fabricarCoche();
 				}
@@ -58,7 +68,6 @@ public class Fabrica {
 					conjuntoCochesFabricados[x]=fabricarCoche();
 				}
 			}
-			numeroFabricados=numeroFabricados+numeroCoches;
 			return true;
 		}
 	}
@@ -73,10 +82,9 @@ public class Fabrica {
 		try {
 			System.out.println("#########################");
 			System.out.println("Fabrica: "+nombreFabrica);
-			System.out.println("Numero actual de fabricados: "+numeroFabricados+"/"+conjuntoCochesFabricados.length);
+			System.out.println("Numero actual de fabricados: "+conjuntoCochesFabricados.length+"/"+capacidadFabrica);
 			System.out.println("*************************");
-			
-			for(int x=0;x<numeroFabricados;x++) {
+			for(int x=0;x<conjuntoCochesFabricados.length;x++) {
 				int i=x+1;
 				System.out.println("Coche"+i+ " color: "+conjuntoCochesFabricados[x].getColor());
 				System.out.println (conjuntoCochesFabricados[x]);
@@ -85,6 +93,7 @@ public class Fabrica {
 		}
 		catch(Exception e) {
 			System.out.println("No hay capacidad suficiente en la fábrica");	
+			System.out.println("Error "+e);
 		}
 		return "";
 	}
@@ -97,13 +106,52 @@ public class Fabrica {
 			for(int x=0;x<numeroCoches;x++) {
 				sacarCoche(0);
 			}
-			numeroFabricados=numeroFabricados-numeroCoches;
 			return true;
 		}
 	}
+	
+	public boolean retirarCoche(int numeroCoches,int color) {
+		if(numeroCoches>conjuntoCochesFabricados.length) {
+			return false;
+		}
+		else {
+			int posicion=0;
+			int cochesDelColor=0;
+			int posiciones[]=new int[numeroCoches];
+			for(int i=0;i<conjuntoCochesFabricados.length;i++) {
+				
+				if(conjuntoCochesFabricados[i].getColorInt()==color)  {
+					cochesDelColor++;
+					if(posicion<numeroCoches) {
+						posiciones[posicion]=i;
+						posicion++;
+					}
+					else {
+						
+					}
+				}
+			}
+			
+			if (cochesDelColor<numeroCoches) {
+				return false;
+			}
+			else {
+				System.out.println("Hay "+cochesDelColor+" coches del color seleccionado. Se procede a eliminar "+numeroCoches+" coches." );
+				
+			for(int x=0;x<posiciones.length;x++) {
+				posiciones[x]=posiciones[x]-x;
+				sacarCoche(posiciones[x]);
+			}
+			return true;
+			}
+		}
+	}
+	
+	
 	private void sacarCoche(int numero) {
 		ArrayList<Coche> lista = new ArrayList<>(Arrays.asList(conjuntoCochesFabricados));
 		lista.remove(numero);
 		conjuntoCochesFabricados = lista.toArray(new Coche[lista.size()]);
 	}
+	
 }
